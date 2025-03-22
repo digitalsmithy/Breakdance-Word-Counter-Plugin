@@ -16,6 +16,12 @@ function bd_reading_time_menu() {
 add_action('admin_init', 'bd_reading_time_register_settings');
 function bd_reading_time_register_settings() {
     register_setting('bd_reading_time_settings_group', 'bd_words_per_minute', array('default' => 238));
+    register_setting('bd_reading_time_settings_group', 'bd_automate', array('default' => 0));
+}
+
+// Conditionally add the save_post action
+if (get_option('bd_automate', 0) == 1) {
+    add_action('save_post', 'bd_automate_reading_time', 10, 3);
 }
 
 // Settings page content
@@ -30,6 +36,10 @@ function bd_reading_time_settings_page() {
                 <tr valign="top">
                     <th scope="row">Words per Minute</th>
                     <td><input type="number" name="bd_words_per_minute" value="<?php echo esc_attr(get_option('bd_words_per_minute', 238)); ?>" /></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Automate</th>
+                    <td><input type="checkbox" name="bd_automate" value="1" <?php checked(1, get_option('bd_automate', 0)); ?> /></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Post ID</th>
@@ -99,6 +109,15 @@ function bd_calculate_reading_time() {
     }
 
     wp_die('Reading time calculation complete.');
+}
+
+function bd_automate_reading_time($post_id, $post, $update) {
+        // Check if it's a valid post type
+        $post_types = get_post_types(array('public' => true));
+        if (in_array($post->post_type, $post_types)) {
+            $words_per_minute = get_option('bd_words_per_minute', 238);
+            bd_process_post($post_id, $words_per_minute);
+        }
 }
 
 function bd_process_post($post_id, $words_per_minute) {
