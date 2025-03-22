@@ -28,7 +28,7 @@ function bd_reading_time_settings_page() {
             <?php do_settings_sections('bd_reading_time_settings_group'); ?>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row">Words ddper Minute</th>
+                    <th scope="row">Words per Minute</th>
                     <td><input type="number" name="bd_words_per_minute" value="<?php echo esc_attr(get_option('bd_words_per_minute', 238)); ?>" /></td>
                 </tr>
                 <tr valign="top">
