@@ -3,7 +3,7 @@
 Plugin Name: Breakdance Reading Time Calculator
 Description: Calculate reading time for Breakdance builder content and store it as post meta.
 Version: 1.0
-Author: Your Name
+Author: Digital Smithy
 */
 
 // Add settings menu
